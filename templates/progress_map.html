@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .steps {
+            margin: 20px 0;
+        }
+        .step {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .step-title {
+            font-weight: bold;
+        }
+        .step-elaboration {
+            margin-top: 5px;
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <div class="steps">
+            {% if titles %}
+                {% for i in range(titles|length) %}
+                    <div class="step">
+                        <div class="step-title">{{ titles[i].title }}</div>
+                        <div class="step-elaboration">
+                            {% if elaborations[i] %}
+                                {{ elaborations[i] }}
+                            {% else %}
+                                No elaboration available.
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No steps found.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
