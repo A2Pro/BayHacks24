@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-custom {
+            background-image: url('/static/bluebg.png');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 </head>
-<body class="bg-green-50 flex items-center justify-center min-h-screen">
+<body class="bg-custom flex items-center justify-center min-h-screen">
     <div class="w-full max-w-md">
         <h1 class="text-3xl font-bold mb-8 text-center text-green-700">Enter the part of the body that is injured / in pain:</h1>
         <form action="/search" method="post" class="space-y-4">
@@ -31,5 +38,6 @@
             </div>
         </form>
     </div>
+    
 </body>
 </html>

@@ -7,31 +7,68 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #e6f3e6;
+            color: #333;
         }
         .container {
             width: 80%;
             margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         h1 {
             text-align: center;
             margin-top: 20px;
+            color: #2e8b57;
         }
         .steps {
             margin: 20px 0;
         }
         .step {
-            border: 1px solid #ddd;
+            border: 1px solid #a8d5a8;
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
+            display: flex;
+            align-items: center;
+            background-color: #f0fff0;
+            transition: background-color 0.3s ease;
+        }
+        .step.completed {
+            background-color: #d4ecd4;
+        }
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #2e8b57;
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+        .checkbox.checked {
+            background-color: #2e8b57;
+            color: white;
+        }
+        .step-content {
+            flex-grow: 1;
         }
         .step-title {
             font-weight: bold;
+            color: #2e8b57;
         }
         .step-elaboration {
             margin-top: 5px;
             font-style: italic;
             color: #555;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -41,14 +78,17 @@
         <div class="steps">
             {% if titles %}
                 {% for i in range(titles|length) %}
-                    <div class="step">
-                        <div class="step-title">{{ titles[i].title }}</div>
-                        <div class="step-elaboration">
-                            {% if elaborations[i] %}
-                                {{ elaborations[i] }}
-                            {% else %}
-                                No elaboration available.
-                            {% endif %}
+                    <div class="step{% if i > 0 %} hidden{% endif %}" data-step="{{ i }}">
+                        <div class="checkbox" onclick="toggleStep({{ i }})">✓</div>
+                        <div class="step-content">
+                            <div class="step-title">{{ titles[i].title }}</div>
+                            <div class="step-elaboration">
+                                {% if elaborations[i] %}
+                                    {{ elaborations[i] }}
+                                {% else %}
+                                    No elaboration available.
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
@@ -57,5 +97,19 @@
             {% endif %}
         </div>
     </div>
+    <script>
+        function toggleStep(stepIndex) {
+            const steps = document.querySelectorAll('.step');
+            const currentStep = steps[stepIndex];
+            const nextStep = steps[stepIndex + 1];
+
+            currentStep.classList.add('completed');
+            currentStep.querySelector('.checkbox').classList.add('checked');
+
+            if (nextStep) {
+                nextStep.classList.remove('hidden');
+            }
+        }
+    </script>
 </body>
 </html>

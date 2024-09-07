@@ -84,7 +84,7 @@ def login():
         try:
             username = request.form.get("username").strip()
             password = request.form.get("password").strip()
-            user = logindb.find_one({"username": user})
+            user = logindb.find_one({"username": username})
             if not user:
                 return render_template("login.html", error="User not found.")
             if user["password"] == password:
@@ -103,8 +103,6 @@ def search():
     if request.method == "POST":
         query = request.form.get('query')
         if query:
-            symptoms = []
-            titles = []
             urls = geturls(query)
             if not urls:
                 return "No results found.", 404
@@ -131,7 +129,7 @@ def scrape_and_process(url):
     response, realtitle = scrape_data(modified_url)
     
     def ask_for_titles():
-        title_str = ask_gpt("I have a following page. There will be some header text, IGNORE it. What I want you to do is gather up the steps to recovery from the page, then put them in this format. Each step should be listed with a title. NO TEXT BEFORE OR AFTER THE ANSWER, JUST THE ANSWER. Here's the format: | Step1 Title | Step2 Title |... Here's the page: " + response)
+        title_str = ask_gpt("I have a following page. There will be some header text, IGNORE it. What I want you to do is gather up the steps to recovery from the page, then put them in this format. Each step should be listed with a title. Make sure the steps are in chronological order. NO TEXT BEFORE OR AFTER THE ANSWER, JUST THE ANSWER. Here's the format: | Step1 Title | Step2 Title |... Here's the page: " + response)
     
         titles = []
         for title in title_str.split('|'):
@@ -151,6 +149,9 @@ def scrape_and_process(url):
         
     return render_template("progress_map.html", title=realtitle, titles=titles, elaborations=elaborations)
 
-
+@app.route("/logout")
+def logout():
+    session.pop("username")
+    return redirect("/login")
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=3945, debug = True)
