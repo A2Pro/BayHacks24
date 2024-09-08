@@ -4,53 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        .card {
-            margin-bottom: 1rem;
-        }
-        .card-body {
-            font-size: 1.1rem;
-        }
-        .bg-custom {
-            background-image: url('/static/bluebg.png');
-            background-size: cover;
-            background-position: center;
+        
+            
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
-<body>
-    <div class="container mt-4">
-        <h1 class="mb-4">Search Results</h1>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="glass-effect p-8 rounded-lg shadow-lg w-full max-w-7xl">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-800">
+            <i class="fas fa-search mr-2"></i>Search Results
+        </h1>
         {% if search_results %}
-            <div class="row">
-                {% for result in search_results %}
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">{{ result.title }}</h4>
-                            </div>
-                            <div class="card-body">
-                                <ul>
-                                    {% for symptom in result.symptoms %}
-                                        <li>{{ symptom }}</li>
-                                    {% endfor %}
-                                </ul>
-                                <a href="{{ url_for('scrape_and_process', url=result.url) }}" class="btn btn-info mt-3">View Diagnosis & Treatment</a>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for result in search_results %}
+            <div class="glass-effect rounded-lg p-6 text-blue-800 shadow-md">
+                <h2 class="text-xl font-semibold mb-4">{{ result.title }}</h2>
+                <ul class="list-disc list-inside space-y-2">
+                    {% for symptom in result.symptoms %}
+                    <li>{{ symptom }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ url_for('scrape_and_process', url=result.url) }}" class="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
+                    <i class="fas fa-info-circle mr-2"></i>View Diagnosis & Treatment
+                </a>
             </div>
+            {% endfor %}
+        </div>
         {% else %}
-            <p>No results found.</p>
+            <p class="text-center text-white mt-6">No results found.</p>
         {% endif %}
-        <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Back to Home</a>
+        <div class="text-center mt-6">
+            <a href="{{ url_for('index') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Home
+            </a>
+        </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
